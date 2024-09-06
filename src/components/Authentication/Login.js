@@ -1,14 +1,13 @@
-import React from "react";
-import { useFormik } from "formik";
-import * as Yup from "yup";
-import useAuth from '../../hooks/useAuth';
-import { useNavigate } from "react-router-dom";
+import React from 'react';
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
+import { useAuth } from '../../hooks/useAuth';
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
     const { login } = useAuth();
     const navigate = useNavigate();
 
-    // Formik setup with Yup validation schema
     const formik = useFormik({
         initialValues: {
             username: '',
@@ -27,19 +26,17 @@ const Login = () => {
     });
 
     return (
-        <div className="login-container flex justify-center items-center h-screen bg-gray-100">
-            <div className="login-box bg-white p-8 rounded-md shadow-md w-full max-w-md">
-                <h2 className="text-2xl font-bold mb-6">Login</h2>
-
+        <div className="login-container flex justify-center items-center min-h-screen bg-gray-200">
+            <div className="login-box bg-white shadow-lg p-10 rounded-lg w-full max-w-md">
+                <h2 className="text-3xl font-semibold mb-6 text-gray-800">Sign In</h2>
                 <form onSubmit={formik.handleSubmit}>
-                    {/* Username Field */}
                     <div className="mb-4">
                         <label htmlFor="username" className="block text-gray-700">Username</label>
                         <input
                             id="username"
                             name="username"
                             type="text"
-                            className={`mt-2 w-full p-2 border ${formik.touched.username && formik.errors.username ? 'border-red-500' : 'border-gray-300'} rounded-md`}
+                            className={`mt-2 w-full px-4 py-2 border ${formik.touched.username && formik.errors.username ? 'border-red-500' : 'border-gray-300'} rounded-md`}
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
                             value={formik.values.username}
@@ -49,14 +46,13 @@ const Login = () => {
                         ) : null}
                     </div>
 
-                    {/* Password Field */}
                     <div className="mb-4">
                         <label htmlFor="password" className="block text-gray-700">Password</label>
                         <input
                             id="password"
                             name="password"
                             type="password"
-                            className={`mt-2 w-full p-2 border ${formik.touched.password && formik.errors.password ? 'border-red-500' : 'border-gray-300'} rounded-md`}
+                            className={`mt-2 w-full px-4 py-2 border ${formik.touched.password && formik.errors.password ? 'border-red-500' : 'border-gray-300'} rounded-md`}
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
                             value={formik.values.password}
@@ -66,15 +62,12 @@ const Login = () => {
                         ) : null}
                     </div>
 
-                    {/* Submit Button */}
-                    <div className="mt-6">
-                        <button
-                            type="submit"
-                            className="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 transition"
-                        >
-                            Login
-                        </button>
-                    </div>
+                    <button
+                        type="submit"
+                        className="w-full bg-indigo-600 text-white py-2 rounded-md hover:bg-indigo-700 transition"
+                    >
+                        Login
+                    </button>
                 </form>
             </div>
         </div>
