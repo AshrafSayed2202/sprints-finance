@@ -3,7 +3,7 @@ import Finance from '../components/Finance/Finance';
 
 const FinanceManagement = () => {
     return (
-        <div>
+        <div className="finance-management-container">
             <Finance />
         </div>
     );

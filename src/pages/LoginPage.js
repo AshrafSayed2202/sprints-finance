@@ -3,7 +3,7 @@ import Login from '../components/Authentication/Login';
 
 const LoginPage = () => {
     return (
-        <div>
+        <div className="login-page-container">
             <Login />
         </div>
     );

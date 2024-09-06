@@ -1,12 +1,14 @@
 import React from 'react';
-import Inventory from '../components/Inventory/Inventory';
+import Portfolio from '../components/Portfolio/Portfolio';
+import PortfolioForm from '../components/Portfolio/PortfolioForm';
 
-const InventoryManagement = () => {
+const PortfolioManagement = () => {
     return (
-        <div>
-            <Inventory />
+        <div className="portfolio-management-container">
+            <PortfolioForm />
+            <Portfolio />
         </div>
     );
 };
 
-export default InventoryManagement;
+export default PortfolioManagement;

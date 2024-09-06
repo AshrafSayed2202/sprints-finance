@@ -1,12 +1,14 @@
 import React from 'react';
-import Sales from '../components/Sales/Sales';
+import TransactionForm from '../components/Transactions/TransactionForm';
+import Transaction from '../components/Transactions/Transaction';
 
-const SalesManagement = () => {
+const TransactionManagement = () => {
     return (
-        <div>
-            <Sales />
+        <div className="transaction-management-container">
+            <TransactionForm />
+            <Transaction />
         </div>
     );
 };
 
-export default SalesManagement;
+export default TransactionManagement;
