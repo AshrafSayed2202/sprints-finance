@@ -1,36 +1,15 @@
 import React, { useContext } from 'react';
-import { ERPContext } from '../../context/ERPContext';
+import { PortfolioContext } from '../../context/PortfolioContext';
 import { Bar } from 'react-chartjs-2';
-import {
-    Chart as ChartJS,
-    CategoryScale,
-    LinearScale,
-    PointElement,
-    LineElement,
-    BarElement,
-    Title,
-    Tooltip,
-    Legend,
-} from 'chart.js';
-// Register the necessary components
-ChartJS.register(
-    CategoryScale,
-    LinearScale,
-    PointElement,
-    LineElement,
-    BarElement,
-    Title,
-    Tooltip,
-    Legend
-);
+
 const Finance = () => {
-    const { state } = useContext(ERPContext);
+    const { state } = useContext(PortfolioContext);
 
     const totalRevenue = state.financialRecords.reduce((sum, record) => sum + record.revenue, 0);
     const totalExpenses = state.financialRecords.reduce((sum, record) => sum + record.expenses, 0);
 
     const data = {
-        labels: ['January', 'February', 'March', 'April', 'May'],
+        labels: state.financialRecords.map(record => record.month),
         datasets: [
             {
                 label: 'Expenses',
@@ -60,19 +39,19 @@ const Finance = () => {
     };
 
     return (
-        <div className="finance-container">
-            <h1 className="text-2xl font-bold mb-4">Finance Management</h1>
-            <div className="metrics grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="card p-4 shadow rounded bg-white">
+        <div className="finance-container p-8">
+            <h1 className="text-3xl font-bold mb-6">Finance Management</h1>
+            <div className="metrics grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                <div className="card p-6 bg-white shadow-lg rounded-lg">
                     <h2 className="text-lg font-semibold">Total Revenue</h2>
                     <p>${totalRevenue}</p>
                 </div>
-                <div className="card p-4 shadow rounded bg-white">
+                <div className="card p-6 bg-white shadow-lg rounded-lg">
                     <h2 className="text-lg font-semibold">Total Expenses</h2>
                     <p>${totalExpenses}</p>
                 </div>
             </div>
-            <div className="chart-container mt-6">
+            <div className="chart-container h-96">
                 <Bar data={data} options={options} />
             </div>
         </div>
