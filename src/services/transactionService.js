@@ -1,38 +1,20 @@
-import axios from 'axios';
-
-const api = axios.create({
-    baseURL: 'https://your-api-url.com', // Replace with your actual API URL
-    headers: {
-        'Content-Type': 'application/json',
-    },
-});
-
-export const getInventory = async () => {
-    const response = await api.get('/inventory');
-    return response.data;
+export const addTransaction = (transaction) => {
+    // Simulate an API call to add a transaction
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            resolve({ ...transaction, id: Date.now() });
+        }, 1000);
+    });
 };
 
-export const addInventoryItem = async (item) => {
-    const response = await api.post('/inventory', item);
-    return response.data;
-};
-
-export const getSales = async () => {
-    const response = await api.get('/sales');
-    return response.data;
-};
-
-export const addSale = async (sale) => {
-    const response = await api.post('/sales', sale);
-    return response.data;
-};
-
-export const getFinancialRecords = async () => {
-    const response = await api.get('/finance');
-    return response.data;
-};
-
-export const addFinancialRecord = async (record) => {
-    const response = await api.post('/finance', record);
-    return response.data;
+export const getTransactions = () => {
+    // Simulate an API call to fetch transactions
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            resolve([
+                { id: 1, type: 'buy', amount: 1000, portfolioName: 'Tech Fund', date: '2023-09-01' },
+                { id: 2, type: 'sell', amount: 500, portfolioName: 'Healthcare Fund', date: '2023-09-02' },
+            ]);
+        }, 1000);
+    });
 };

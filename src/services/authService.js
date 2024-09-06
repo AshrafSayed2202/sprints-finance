@@ -1,16 +1,21 @@
-import api from './api';
-
-export const login = async (username, password) => {
-    const response = await api.post('/auth/login', { username, password });
-    return response.data;
+export const login = (username, password) => {
+    // Simulate an API call for user login
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            if (username === 'admin' && password === 'password') {
+                resolve({ username });
+            } else {
+                reject(new Error('Invalid username or password'));
+            }
+        }, 1000);
+    });
 };
 
-export const register = async (username, email, password) => {
-    const response = await api.post('/auth/register', { username, email, password });
-    return response.data;
-};
-
-export const logout = async () => {
-    const response = await api.post('/auth/logout');
-    return response.data;
+export const logout = () => {
+    // Simulate an API call for user logout
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            resolve();
+        }, 500);
+    });
 };
