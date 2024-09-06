@@ -1,38 +1,28 @@
 import React, { useContext } from 'react';
-import { ERPContext } from '../../context/ERPContext';
-import { Line } from 'react-chartjs-2';
+import { PortfolioContext } from '../../context/PortfolioContext';
 import {
     Chart as ChartJS,
     CategoryScale,
     LinearScale,
     PointElement,
     LineElement,
-    BarElement,
     Title,
     Tooltip,
     Legend,
 } from 'chart.js';
+import { Line } from 'react-chartjs-2';
 
-// Register the necessary components
-ChartJS.register(
-    CategoryScale,
-    LinearScale,
-    PointElement,
-    LineElement,
-    BarElement,
-    Title,
-    Tooltip,
-    Legend
-);
+ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
+
 const Dashboard = () => {
-    const { state } = useContext(ERPContext);
+    const { state } = useContext(PortfolioContext);
 
     const data = {
         labels: ['January', 'February', 'March', 'April', 'May'],
         datasets: [
             {
-                label: 'Sales',
-                data: [1200, 1900, 3000, 5000, 2300],
+                label: 'Portfolio Performance',
+                data: state.portfolios.map(portfolio => portfolio.performance),
                 borderColor: 'rgba(75, 192, 192, 1)',
                 backgroundColor: 'rgba(75, 192, 192, 0.2)',
                 fill: true,
@@ -51,19 +41,19 @@ const Dashboard = () => {
     };
 
     return (
-        <div className="dashboard-container">
-            <h1 className="text-2xl font-bold mb-4">Dashboard</h1>
-            <div className="metrics grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="card p-4 shadow rounded bg-white">
-                    <h2 className="text-lg font-semibold">Inventory Levels</h2>
-                    <p>Total Items: {state.inventory.length}</p>
+        <div className="dashboard-container p-8">
+            <h1 className="text-3xl font-bold mb-6">Dashboard</h1>
+            <div className="metrics grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                <div className="card p-6 bg-white shadow-lg rounded-lg">
+                    <h2 className="text-lg font-semibold">Total Portfolios</h2>
+                    <p>{state.portfolios.length}</p>
                 </div>
-                <div className="card p-4 shadow rounded bg-white">
-                    <h2 className="text-lg font-semibold">Total Sales</h2>
-                    <p>$12,000</p>
+                <div className="card p-6 bg-white shadow-lg rounded-lg">
+                    <h2 className="text-lg font-semibold">Total Value</h2>
+                    <p>${state.portfolios.reduce((sum, portfolio) => sum + portfolio.value, 0)}</p>
                 </div>
             </div>
-            <div className="chart-container mt-6">
+            <div className="chart-container h-96">
                 <Line data={data} options={options} />
             </div>
         </div>
