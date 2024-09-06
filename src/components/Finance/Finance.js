@@ -1,6 +1,18 @@
 import React, { useContext } from 'react';
 import { PortfolioContext } from '../../context/PortfolioContext';
+import {
+    Chart as ChartJS,
+    CategoryScale,
+    LinearScale,
+    BarElement,
+    Title,
+    Tooltip,
+    Legend,
+} from 'chart.js';
 import { Bar } from 'react-chartjs-2';
+
+// Register the BarElement and other chart components
+ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 const Finance = () => {
     const { state } = useContext(PortfolioContext);
