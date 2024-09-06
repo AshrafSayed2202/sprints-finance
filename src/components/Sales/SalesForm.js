@@ -1,34 +1,34 @@
 import React, { useState, useContext } from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import { ERPContext } from '../../context/ERPContext';
+import { PortfolioContext } from '../../context/PortfolioContext';
 
 const SalesForm = () => {
-    const { dispatch } = useContext(ERPContext);
+    const { state, dispatch } = useContext(PortfolioContext);
     const [submitted, setSubmitted] = useState(false);
 
     const formik = useFormik({
         initialValues: {
-            productName: '',
-            quantity: '',
-            totalAmount: '',
-            customerName: '',
+            type: '',
+            amount: '',
+            portfolio: '',
+            date: '',
         },
         validationSchema: Yup.object({
-            productName: Yup.string().required('Product name is required'),
-            quantity: Yup.number().required('Quantity is required').positive('Quantity must be positive'),
-            totalAmount: Yup.number().required('Total amount is required').positive('Total amount must be positive'),
-            customerName: Yup.string().required('Customer name is required'),
+            type: Yup.string().required('Transaction type is required'),
+            amount: Yup.number().required('Amount is required').positive('Amount must be positive'),
+            portfolio: Yup.string().required('Select a portfolio'),
+            date: Yup.date().required('Date is required'),
         }),
         onSubmit: (values) => {
             dispatch({
-                type: 'UPDATE_SALES',
+                type: 'ADD_TRANSACTION',
                 payload: {
                     id: Date.now(),
-                    productName: values.productName,
-                    quantity: values.quantity,
-                    totalAmount: values.totalAmount,
-                    customerName: values.customerName,
+                    type: values.type,
+                    amount: values.amount,
+                    portfolioName: values.portfolio,
+                    date: values.date,
                 },
             });
             setSubmitted(true);
@@ -37,81 +37,92 @@ const SalesForm = () => {
     });
 
     return (
-        <div className="sales-form-container">
-            <h1 className="text-2xl font-bold mb-4">Add New Sale</h1>
-            <form onSubmit={formik.handleSubmit} className="sales-form grid grid-cols-1 gap-4">
+        <div className="sales-form-container p-8">
+            <h1 className="text-3xl font-bold mb-6">New Transaction</h1>
+            <form onSubmit={formik.handleSubmit} className="grid grid-cols-1 gap-6">
                 <div>
-                    <label htmlFor="productName" className="block text-gray-700">Product Name</label>
-                    <input
-                        id="productName"
-                        name="productName"
-                        type="text"
+                    <label htmlFor="type" className="block text-gray-700">Transaction Type</label>
+                    <select
+                        id="type"
+                        name="type"
+                        className={`mt-2 w-full px-4 py-3 border ${formik.touched.type && formik.errors.type ? 'border-red-500' : 'border-gray-300'} rounded-lg`}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
-                        value={formik.values.productName}
-                        className={`mt-2 p-2 border ${formik.touched.productName && formik.errors.productName ? 'border-red-500' : 'border-gray-300'} rounded-md`}
-                    />
-                    {formik.touched.productName && formik.errors.productName ? (
-                        <div className="text-red-500 text-sm mt-1">{formik.errors.productName}</div>
-                    ) : null}
+                        value={formik.values.type}
+                    >
+                        <option value="" label="Select transaction type" />
+                        <option value="buy" label="Buy" />
+                        <option value="sell" label="Sell" />
+                        <option value="transfer" label="Transfer" />
+                    </select>
+                    {formik.touched.type && formik.errors.type && (
+                        <div className="text-red-500 text-sm mt-1">{formik.errors.type}</div>
+                    )}
                 </div>
 
                 <div>
-                    <label htmlFor="quantity" className="block text-gray-700">Quantity</label>
+                    <label htmlFor="amount" className="block text-gray-700">Amount</label>
                     <input
-                        id="quantity"
-                        name="quantity"
+                        id="amount"
+                        name="amount"
                         type="number"
+                        className={`mt-2 w-full px-4 py-3 border ${formik.touched.amount && formik.errors.amount ? 'border-red-500' : 'border-gray-300'} rounded-lg`}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
-                        value={formik.values.quantity}
-                        className={`mt-2 p-2 border ${formik.touched.quantity && formik.errors.quantity ? 'border-red-500' : 'border-gray-300'} rounded-md`}
+                        value={formik.values.amount}
                     />
-                    {formik.touched.quantity && formik.errors.quantity ? (
-                        <div className="text-red-500 text-sm mt-1">{formik.errors.quantity}</div>
-                    ) : null}
+                    {formik.touched.amount && formik.errors.amount && (
+                        <div className="text-red-500 text-sm mt-1">{formik.errors.amount}</div>
+                    )}
                 </div>
 
                 <div>
-                    <label htmlFor="totalAmount" className="block text-gray-700">Total Amount</label>
-                    <input
-                        id="totalAmount"
-                        name="totalAmount"
-                        type="number"
+                    <label htmlFor="portfolio" className="block text-gray-700">Select Portfolio</label>
+                    <select
+                        id="portfolio"
+                        name="portfolio"
+                        className={`mt-2 w-full px-4 py-3 border ${formik.touched.portfolio && formik.errors.portfolio ? 'border-red-500' : 'border-gray-300'} rounded-lg`}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
-                        value={formik.values.totalAmount}
-                        className={`mt-2 p-2 border ${formik.touched.totalAmount && formik.errors.totalAmount ? 'border-red-500' : 'border-gray-300'} rounded-md`}
-                    />
-                    {formik.touched.totalAmount && formik.errors.totalAmount ? (
-                        <div className="text-red-500 text-sm mt-1">{formik.errors.totalAmount}</div>
-                    ) : null}
+                        value={formik.values.portfolio}
+                    >
+                        <option value="" label="Select portfolio" />
+                        {state.portfolios.map((portfolio) => (
+                            <option key={portfolio.id} value={portfolio.name}>
+                                {portfolio.name}
+                            </option>
+                        ))}
+                    </select>
+                    {formik.touched.portfolio && formik.errors.portfolio && (
+                        <div className="text-red-500 text-sm mt-1">{formik.errors.portfolio}</div>
+                    )}
                 </div>
 
                 <div>
-                    <label htmlFor="customerName" className="block text-gray-700">Customer Name</label>
+                    <label htmlFor="date" className="block text-gray-700">Transaction Date</label>
                     <input
-                        id="customerName"
-                        name="customerName"
-                        type="text"
+                        id="date"
+                        name="date"
+                        type="date"
+                        className={`mt-2 w-full px-4 py-3 border ${formik.touched.date && formik.errors.date ? 'border-red-500' : 'border-gray-300'} rounded-lg`}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
-                        value={formik.values.customerName}
-                        className={`mt-2 p-2 border ${formik.touched.customerName && formik.errors.customerName ? 'border-red-500' : 'border-gray-300'} rounded-md`}
+                        value={formik.values.date}
                     />
-                    {formik.touched.customerName && formik.errors.customerName ? (
-                        <div className="text-red-500 text-sm mt-1">{formik.errors.customerName}</div>
-                    ) : null}
+                    {formik.touched.date && formik.errors.date && (
+                        <div className="text-red-500 text-sm mt-1">{formik.errors.date}</div>
+                    )}
                 </div>
 
                 <button
                     type="submit"
-                    className="mt-4 p-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition"
+                    className="w-full bg-green-500 text-white py-3 rounded-lg hover:bg-green-600 transition"
                 >
-                    Add Sale
+                    Add Transaction
                 </button>
+
                 {submitted && (
-                    <div className="mt-4 text-green-500">Sale added successfully!</div>
+                    <div className="text-green-500 mt-4">Transaction added successfully!</div>
                 )}
             </form>
         </div>
