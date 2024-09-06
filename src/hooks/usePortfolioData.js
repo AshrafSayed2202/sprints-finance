@@ -1,8 +1,8 @@
 import { useContext } from 'react';
-import { ERPContext } from '../context/ERPContext';
+import { PortfolioContext } from '../context/PortfolioContext';
 
-const useERPData = () => {
-    return useContext(ERPContext);
+const usePortfolioData = () => {
+    return useContext(PortfolioContext);
 };
 
-export default useERPData;
+export default usePortfolioData;
